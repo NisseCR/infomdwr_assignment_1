@@ -58,5 +58,7 @@ create table employee (
 -- Seed database.
 insert into customer (street, house_number, city, country, first_name, surname)
 values ("Via delle Fondameta", 1, "Vatican", "Vatican City", "Innocensius", "II"),
-       ("Jeungsan-ro, Mapo-gu", 87, "Seoul", "South-Korea", "Kim", "Impossible");
+       ("Jeungsan-ro, Mapo-gu", 87, "Seoul", "South-Korea", "Kim", "Impossible"),
+       ("Broadway", 219, "New York", "United States", "Orpheus", "II"),
+       ("Broadway", 219, "New York", "United States", "Eurydice", "II");
 
