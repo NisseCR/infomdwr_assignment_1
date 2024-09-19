@@ -21,6 +21,7 @@ def create_connection(db_file: str) -> sqlite3.Connection | None:
 def read_customer(connection: sqlite3.Connection) -> pd.DataFrame:
     """
     Use the built-in `read_sql` function to read data from the `customer` table and cast the object to a dataframe.
+    The `customer_id` attribute is set as the Dataframe index.
 
     :param connection: Database connection
     :return: DataFrame containing the customer data
@@ -38,7 +39,7 @@ def read_customer(connection: sqlite3.Connection) -> pd.DataFrame:
 
 def jaccard_similarity(r1: pd.Series, r2: pd.Series) -> float:
     """
-    Calculate the Jaccard similarity score a pair of Dataframe records.
+    Calculate the Jaccard similarity score over a pair of Dataframe records.
 
     :param r1: first record in pair
     :param r2: second record in pair
@@ -55,8 +56,8 @@ def jaccard_similarity(r1: pd.Series, r2: pd.Series) -> float:
 
 def pairwise_similarity(sim: Callable[[pd.Series, pd.Series], float], df: pd.DataFrame) -> pd.DataFrame:
     """
-    Using the given similarity function, retrieve the pair-wise similarity score between records.
-    This algorithm avoids duplicate and identity comparisons.
+    Using the given similarity function, retrieve the pair-wise similarity score between records. This implementation
+    can use any similarity function and is data-agnostic. The algorithm also avoids duplicate and identity comparisons.
 
     :param sim: Similarity function (e.g. Jaccard similarity)
     :param df: Dataframe containing the records
@@ -79,14 +80,19 @@ def pairwise_similarity(sim: Callable[[pd.Series, pd.Series], float], df: pd.Dat
 
 
 def main():
+    # Establish database connection.
     connection = create_connection("data/assignment_1.sqlite")
+    if connection is None:
+        return
+
+    # Retrieve the customer data.
     df = read_customer(connection)
     print(df)
 
+    # Calculate pair-wise similarity score between customer records.
     sim_df = pairwise_similarity(jaccard_similarity, df)
     print(sim_df)
 
-    # Similarities higher than 0.7
     print("\nSimilarity scores > 0.7")
     print(sim_df[sim_df["similarity_score"] >= 0.7])
 
