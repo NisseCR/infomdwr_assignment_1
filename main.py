@@ -4,10 +4,11 @@ import pandas as pd
 import sqlite3
 
 
-def create_connection(db_file) -> sqlite3.Connection | None:
+def create_connection(db_file: str) -> sqlite3.Connection | None:
     """
     Create a database connection to the SQLite database specified by the db_file.
-    :param db_file: database file
+
+    :param db_file: Database file
     :return: Connection object or None
     """
     try:
@@ -19,9 +20,10 @@ def create_connection(db_file) -> sqlite3.Connection | None:
 
 def read_customer(connection: sqlite3.Connection) -> pd.DataFrame:
     """
+    Use the built-in `read_sql` function to read data from the `customer` table and cast the object to a dataframe.
 
-    :param connection:
-    :return:
+    :param connection: Database connection
+    :return: DataFrame containing the customer data
     """
     query = """
     select
@@ -35,12 +37,32 @@ def read_customer(connection: sqlite3.Connection) -> pd.DataFrame:
 
 
 def jaccard_similarity(r1: pd.Series, r2: pd.Series) -> float:
+    """
+    Calculate the Jaccard similarity score a pair of Dataframe records.
+
+    :param r1: first record in pair
+    :param r2: second record in pair
+    :return: Similarity score
+    """
     s1 = set(r1)
     s2 = set(r2)
-    return len(s1.intersection(s2)) / len(s1.union(s2))
+
+    try:
+        return len(s1.intersection(s2)) / len(s1.union(s2))
+    except ZeroDivisionError:
+        return 0
 
 
 def pairwise_similarity(sim: Callable[[pd.Series, pd.Series], float], df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Using the given similarity function, retrieve the pair-wise similarity score between records.
+    This algorithm avoids duplicate and identity comparisons.
+
+    :param sim: Similarity function (e.g. Jaccard similarity)
+    :param df: Dataframe containing the records
+    :return: Dataframe with pairwise record similarities
+    """
+
     data = []
     for i, r1 in df.iterrows():
         for j, r2 in df.iterrows():
@@ -54,7 +76,6 @@ def pairwise_similarity(sim: Callable[[pd.Series, pd.Series], float], df: pd.Dat
         data,
         columns=["customer_id_x", "customer_id_y", "first_name_x", "first_name_y", "similarity_score"]
     )
-
 
 
 def main():
