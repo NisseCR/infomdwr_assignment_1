@@ -39,7 +39,7 @@ create table loan (
     branch_id integer not null,
     customer_id integer not null,
     amount float not null,
-    currency varchar(20),
+    currency varchar(20) not null,
     foreign key (branch_id) references branch,
     foreign key (customer_id) references customer
 );
