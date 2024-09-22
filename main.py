@@ -4,6 +4,9 @@ import pandas as pd
 import sqlite3
 
 
+pd.set_option('display.max_columns', None)
+
+
 def create_connection(db_file: str) -> sqlite3.Connection | None:
     """
     Create a database connection to the SQLite database specified by the db_file.
@@ -80,17 +83,17 @@ def pairwise_similarity(sim: Callable[[pd.Series, pd.Series], float], df: pd.Dat
 
 
 def main():
-    # Establish database connection.
+    # 3.a Establish database connection.
     connection = create_connection("data/assignment_1.sqlite")
     if connection is None:
         return
 
-    # Retrieve the customer data.
-    df = read_customer(connection)
-    print(df)
+    # 3.b Retrieve the customer data.
+    customer_df = read_customer(connection)
+    print(customer_df)
 
-    # Calculate pair-wise similarity score between customer records.
-    sim_df = pairwise_similarity(jaccard_similarity, df)
+    # 3.c Calculate pair-wise similarity score between customer records.
+    sim_df = pairwise_similarity(jaccard_similarity, customer_df)
     print(sim_df)
 
     print("\nSimilarity scores > 0.7")
