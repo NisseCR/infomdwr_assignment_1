@@ -56,10 +56,6 @@ create table employee (
 );
 
 -- Seed database.
-select
-    *
-from customer
-
 insert into customer (street, house_number, city, country, first_name, surname)
 values ("Via delle Fondameta", 1, "Vatican", "Vatican City", "Innocensius", "II"),
        ("Jeungsan-ro, Mapo-gu", 87, "Seoul", "South-Korea", "Kim", "Impossible"),
