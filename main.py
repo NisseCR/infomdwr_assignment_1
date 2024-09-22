@@ -100,5 +100,4 @@ def main():
     print(sim_df[sim_df["similarity_score"] >= 0.7])
 
 
-if __name__ == '__main__':
-    main()
+main()
