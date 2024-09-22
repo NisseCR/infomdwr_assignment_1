@@ -56,11 +56,23 @@ create table employee (
 );
 
 -- Seed database.
+select
+    *
+from customer
+
 insert into customer (street, house_number, city, country, first_name, surname)
 values ("Via delle Fondameta", 1, "Vatican", "Vatican City", "Innocensius", "II"),
        ("Jeungsan-ro, Mapo-gu", 87, "Seoul", "South-Korea", "Kim", "Impossible"),
        ("Broadway", 219, "New York", "United States", "Orpheus", "II"),
        ("Broadway", 219, "New York", "United States", "Eurydice", "II");
+
+insert into branch (branch_name, street, building_number, city, phone_number)
+values ("test", "test", 6, "test", 0633333333);
+
+insert into account (customer_id, balance, branch_id)
+values (1, 1071, 1),
+       (1, 654, 1),
+       (3, 666, 1);
 
 -- Query database.
 select
